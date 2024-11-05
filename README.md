@@ -11,6 +11,14 @@ Flutterで開発したシンプルなポケモンアプリです。RiverpodとIs
 - ローカルデータベース（Isar）を使ったお気に入りリストの永続化
 - ライトモードとダークモードの切り替え対応
 
+## デモ
+
+
+
+https://github.com/user-attachments/assets/2815c9a6-c411-4536-ba5d-f65257e69310
+
+
+
 ## 技術スタック
 
 - **Flutter** - UIフレームワーク
