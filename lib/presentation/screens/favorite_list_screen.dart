@@ -10,7 +10,7 @@ class FavoriteListScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final favoritePokemonList = ref.watch(favoriteControllerProvider);
+    final favoritePokemonListValue = ref.watch(favoriteControllerProvider);
     final favoriteController = ref.read(favoriteControllerProvider.notifier);
     final selectedIdsProvider = ref.read(selectedPokemonIdsProvider.notifier);
 
@@ -38,41 +38,53 @@ class FavoriteListScreen extends HookConsumerWidget {
             ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: favoritePokemonList.length,
-        itemBuilder: (context, index) {
-          final favoritePokemon = favoritePokemonList[index];
-          final isSelected =
-              selectedPokemonIds.contains(favoritePokemon.pokemonId);
+      body: favoritePokemonListValue.when(
+        data: (favoritePokemonList) {
+          if (favoritePokemonList.isEmpty) {
+            return const Center(child: Text('お気に入りはまだありません'));
+          }
+          return ListView.builder(
+            itemCount: favoritePokemonList.length,
+            itemBuilder: (context, index) {
+              final favoritePokemon = favoritePokemonList[index];
+              final isSelected =
+                  selectedPokemonIds.contains(favoritePokemon.pokemonId);
 
-          return ListTile(
-            leading: Image.network(
-              favoritePokemon.imageUrl,
-              width: 50,
-              height: 50,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.broken_image,
-                color: Colors.grey,
-                size: 50,
-              ),
-            ),
-            title: Text(favoritePokemon.name),
-            tileColor: isSelected ? Colors.grey[300] : null,
-            trailing: isEditMode
-                ? Checkbox(
-                    value: isSelected,
-                    onChanged: (_) {
-                      selectedIdsProvider
-                          .toggleSelection(favoritePokemon.pokemonId);
-                    })
-                : const SizedBox.shrink(),
-            onTap: () {
-              if (isEditMode) {
-                selectedIdsProvider.toggleSelection(favoritePokemon.pokemonId);
-              }
+              return ListTile(
+                leading: Image.network(
+                  favoritePokemon.imageUrl,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.broken_image,
+                    color: Colors.grey,
+                    size: 50,
+                  ),
+                ),
+                title: Text(favoritePokemon.name),
+                tileColor: isSelected ? Colors.grey[300] : null,
+                trailing: isEditMode
+                    ? Checkbox(
+                        value: isSelected,
+                        onChanged: (_) {
+                          selectedIdsProvider
+                              .toggleSelection(favoritePokemon.pokemonId);
+                        })
+                    : const SizedBox.shrink(),
+                onTap: () {
+                  if (isEditMode) {
+                    selectedIdsProvider
+                        .toggleSelection(favoritePokemon.pokemonId);
+                  }
+                },
+              );
             },
           );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) {
+          return Center(child: Text('エラーが発生しました: $error'));
         },
       ),
     );

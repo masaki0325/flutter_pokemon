@@ -1,10 +1,14 @@
 import 'package:flutter_pokemon/data/models/favorite_pokemon.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final isarProvider = Provider<Future<Isar>>((ref) async {
-  final isar = await Isar.open([
-    FavoritePokemonSchema,
-  ], directory: 'isar');
+part 'isar_provider.g.dart';
+
+@riverpod
+Future<Isar> isar(IsarRef ref) async {
+  final isar = await Isar.open(
+    [FavoritePokemonSchema],
+    directory: 'isar',
+  );
   return isar;
-});
+}

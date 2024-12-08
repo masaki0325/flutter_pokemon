@@ -1,13 +1,14 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final selectedPokemonIdsProvider =
-    StateNotifierProvider.autoDispose<SelectedPokemonIdsNotifier, List<int>>(
-        (ref) {
-  return SelectedPokemonIdsNotifier();
-});
+part 'selected_pokemon_ids_controller.g.dart';
 
-class SelectedPokemonIdsNotifier extends StateNotifier<List<int>> {
-  SelectedPokemonIdsNotifier() : super([]);
+@riverpod
+class SelectedPokemonIds extends _$SelectedPokemonIds {
+  // 初期状態を返す
+  @override
+  List<int> build() {
+    return [];
+  }
 
   // ポケモンIDの選択・解除トグル処理
   void toggleSelection(int pokemonId) {

@@ -21,9 +21,11 @@ class PokemonDetailScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pokemonDetailAsync = ref.watch(pokemonDetailProvider(pokemonId));
     final favoriteController = ref.read(favoriteControllerProvider.notifier);
-    final isFavorite = ref
-        .watch(favoriteControllerProvider)
-        .any((pokemon) => pokemon.pokemonId == pokemonId);
+
+    final favoriteListState = ref.watch(favoriteControllerProvider);
+    final favoriteList = favoriteListState.asData?.value ?? [];
+    final isFavorite =
+        favoriteList.any((pokemon) => pokemon.pokemonId == pokemonId);
 
     return Scaffold(
       appBar: AppBar(

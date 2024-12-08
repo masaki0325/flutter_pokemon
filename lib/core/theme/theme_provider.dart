@@ -1,25 +1,20 @@
 import 'package:flutter_pokemon/core/theme/theme_preference.dart';
 import 'package:flutter_pokemon/core/utils/app_preferences.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final themeProvider = StateNotifierProvider<ThemeNotifier, bool>((ref) {
-  return ThemeNotifier();
-});
+part 'theme_provider.g.dart';
 
-class ThemeNotifier extends StateNotifier<bool> {
+@riverpod
+class ThemeNotifier extends _$ThemeNotifier {
   final ThemePreference _preference = ThemePreference();
 
-  ThemeNotifier() : super(false) {
-    _loadTheme();
-  }
-
-  Future<void> _loadTheme() async {
-    final theme = await _preference.getTheme();
-    state = theme;
+  @override
+  Future<bool> build() async {
+    return await _preference.getTheme();
   }
 
   Future<void> toggleTheme(bool isDarkMode) async {
-    state = isDarkMode;
-    AppPreferences.setDarkTheme(isDarkMode);
+    state = AsyncData(isDarkMode);
+    await AppPreferences.setDarkTheme(isDarkMode);
   }
 }

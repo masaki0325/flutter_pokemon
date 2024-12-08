@@ -1,8 +1,12 @@
 import 'package:flutter_pokemon/data/services/pokemon_service.dart';
-import 'package:flutter_pokemon/providers/dio_provider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final pokemonServiceProvider = Provider<PokemonService>((ref) {
+import 'dio_provider.dart';
+
+part 'pokemon_service_provider.g.dart';
+
+@riverpod
+PokemonService pokemonService(PokemonServiceRef ref) {
   final dio = ref.watch(dioProvider);
   return PokemonService(dio);
-});
+}

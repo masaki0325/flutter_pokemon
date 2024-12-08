@@ -8,7 +8,8 @@ class SettingScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDarkMode = ref.watch(themeProvider);
+    final themeState = ref.watch(themeNotifierProvider);
+    final isDarkMode = themeState.asData!.value;
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +32,7 @@ class SettingScreen extends HookConsumerWidget {
             trailing: Switch(
               value: isDarkMode,
               onChanged: (value) =>
-                  ref.read(themeProvider.notifier).toggleTheme(value),
+                  ref.read(themeNotifierProvider.notifier).toggleTheme(value),
             ),
           ),
           const Divider(),

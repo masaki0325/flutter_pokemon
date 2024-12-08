@@ -1,34 +1,30 @@
 import 'package:flutter_pokemon/data/models/favorite_pokemon.dart';
 import 'package:flutter_pokemon/data/repositories/favorite_pokemon_repository.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final favoritePokemonUseCaseProvider = Provider((ref) {
+part 'favorite_pokemon_use_case.g.dart';
+
+@riverpod
+FavoritePokemonUseCase favoritePokemonUseCase(FavoritePokemonUseCaseRef ref) {
   final repository = ref.watch(favoritePokemonProvider);
   return FavoritePokemonUseCase(repository);
-});
+}
 
 class FavoritePokemonUseCase {
   final FavoritePokemonRepository _repository;
 
   FavoritePokemonUseCase(this._repository);
 
-  Future<List<FavoritePokemon>> getFavorites() async {
-    return await _repository.getFavorites();
-  }
+  Future<List<FavoritePokemon>> getFavorites() => _repository.getFavorites();
 
-  Future<void> addFavorite(FavoritePokemon pokemon) async {
-    await _repository.addFavorite(pokemon);
-  }
+  Future<void> addFavorite(FavoritePokemon pokemon) =>
+      _repository.addFavorite(pokemon);
 
-  Future<void> removeFavorite(int pokemonId) async {
-    await _repository.removeFavorite(pokemonId);
-  }
+  Future<void> removeFavorite(int pokemonId) =>
+      _repository.removeFavorite(pokemonId);
 
-  Future<bool> isFavorite(int pokemonId) async {
-    return await _repository.isFavorite(pokemonId);
-  }
+  Future<bool> isFavorite(int pokemonId) => _repository.isFavorite(pokemonId);
 
-  Future<void> removeFavorites(List<int> selectedPokemonIds) async {
-    await _repository.removeFavorites(selectedPokemonIds);
-  }
+  Future<void> removeFavorites(List<int> selectedPokemonIds) =>
+      _repository.removeFavorites(selectedPokemonIds);
 }

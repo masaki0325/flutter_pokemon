@@ -1,6 +1,6 @@
 import 'package:flutter_pokemon/data/models/favorite_pokemon.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:isar/isar.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 final favoritePokemonIsarProvider =
     Provider<Isar>((ref) => throw UnimplementedError());
@@ -40,14 +40,15 @@ class FavoritePokemonRepository {
   }
 
   Future<bool> isFavorite(int pokemonId) async {
-    return await _isar.favoritePokemons
-            .filter()
-            .pokemonIdEqualTo(pokemonId)
-            .findFirst() !=
-        null;
+    final count = await _isar.favoritePokemons
+        .filter()
+        .pokemonIdEqualTo(pokemonId)
+        .count();
+    return count > 0;
   }
 
   Future<void> removeFavorites(List<int> pokemonIds) async {
+    if (pokemonIds.isEmpty) return;
     await _isar.writeTxn(() async {
       for (final pokemonId in pokemonIds) {
         await _isar.favoritePokemons

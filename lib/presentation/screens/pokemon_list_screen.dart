@@ -61,6 +61,7 @@ class PokemonListScreen extends HookConsumerWidget {
   }
 }
 
+/// ローディングインジケータ
 class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({super.key});
 
@@ -72,6 +73,7 @@ class LoadingIndicator extends StatelessWidget {
   }
 }
 
+/// エラー時のリトライビュー
 class ErrorRetryView extends StatelessWidget {
   final VoidCallback onRetry;
 
